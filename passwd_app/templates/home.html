@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ 
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body class="container-fluid">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info">
+        <strong>{{message}}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <center class="row">
+        <h1><i>__Password Manager__</i></h1>
+        <hr />
+    </center>
+    <right><a href="{% url 'log_out' %}">Log Out</a><br></right>
+    <div class="row">
+        <div class="col-md-5">
+            <form method="POST">
+                {% csrf_token %}
+                {{ forms }}
+                <input type="submit" class="btn btn-default" value="save"/>
+                <br><br>
+            </form>
+        </div>
+        <div class="col-md-1"> </div>
+        <div class="col-md-5">
+            <table border="2">
+                <tr>
+                    <th>Site Name</th>
+                    <th>Site URL</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Actions</th>
+                </tr>
+                {% for l in list %}
+                <tr>
+                    <td>{{l.site_name}}</td> 
+                    <td>{{l.site_url}}</td> 
+                    <td>{{l.email}}</td> 
+                    <td>{{l.passwd}}</td> 
+                    <td>
+                        <form action="/edit/{{l.id}}/" method="POST"  style=" padding-right: 4%; padding-bottom: 3%;">
+                            {% csrf_token %}
+                            <button value="edit" type="submit"  class="btn btn-primary" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></button>
+                        </form>
+                        <br/><br/>
+                        <form action="/delete/{{l.id}}/" method="POST"  style=" padding-right: 4%; padding-bottom: 3%;">
+                            {% csrf_token %}
+                            <button value="remove" type="submit"  class="btn btn-primary" style="float: right;"><span class="glyphicon glyphicon-trash"></span></button>
+                        </form>
+                            
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
